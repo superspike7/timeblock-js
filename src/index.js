@@ -1,3 +1,5 @@
+import "./style.css"
+
 "use strict";
 
 function TimeBlock(options){
@@ -12,11 +14,8 @@ function TimeBlock(options){
       }
       return arr;
     }
-
+ 
 };
 
 
 
-
-
-console.log("hello world");
