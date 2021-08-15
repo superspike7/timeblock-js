@@ -7,13 +7,13 @@ function TimeBlock(options){
 
 
 
-    this.totalTime = () => {
-      return 
-    }
-
+    // this.totalTime = () => {
+    //   return 
+    // }
 };
 
 
 
 
-console.log();
+
+console.log("hello world");
