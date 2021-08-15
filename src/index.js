@@ -2,14 +2,17 @@
 
 function TimeBlock(options){
 
-    this.wakingHours = options.wakingHours || "05:00";
-    this.sleepingHours = options.sleepingHours || "21:00";
+    this.wakingHour = options.wakingHour || 5;
+    this.sleepingHour = options.sleepingHour || 21;
 
+    this.timeRange = () => {
+      let arr = [];
+      for(let i = this.wakingHour; i <= this.sleepingHour; i++){
+        arr.push(i);
+      }
+      return arr;
+    }
 
-
-    // this.totalTime = () => {
-    //   return 
-    // }
 };
 
 
