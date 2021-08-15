@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\n\n\"use strict\";\n\nfunction TimeBlock(options){\n\n    this.wakingHour = options.wakingHour || 5;\n    this.sleepingHour = options.sleepingHour || 21;\n\n    this.timeRange = () => {\n      let arr = [];\n      for(let i = this.wakingHour; i <= this.sleepingHour; i++){\n        arr.push(i);\n      }\n      return arr;\n    }\n \n};\n\n\n\n\n\n//# sourceURL=webpack://timeblock/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\n\n\"use strict\";\n\nfunction TimeBlock(options){\n\n    this.wakingHour = options.wakingHour || 5;\n    this.sleepingHour = options.sleepingHour || 21;\n\n};\n\nTimeBlock.prototype.range = function() {\n      let first = Number(this.wakingHour);\n      let last = Number(this.sleepingHour);\n      let arr = [];\n      for(let i = first; i <= last; i++){\n        arr.push(i);\n      }\n      return arr;\n};\n\n\nvar test = new TimeBlock({});\nconsole.log(test.range());\n\n\n\n//# sourceURL=webpack://timeblock/./src/index.js?");
 
 /***/ })
 
