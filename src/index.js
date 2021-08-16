@@ -59,14 +59,15 @@ const taskComponent = () => {
                          'h-10', 'col-start-2', 'col-span-3',
                          'gap-px', 'grid');
 
-  const createTask = (height, prio) => {
+  const createTask = (height) => {
     const task = document.createElement('div');
     task.classList.add('bg-blue-300');
-    task.classList.add(`h-${height}`, `col-span-${prio}`)
+    task.classList.add(`h-${height}`);
     taskGrid.appendChild(task);
   }
 
-  createTask("52");
+  createTask("56");
+  createTask("10m");
 
   return {
     taskGrid
