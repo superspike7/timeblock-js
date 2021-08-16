@@ -8,6 +8,7 @@
     filename: 'bundle.js',
      path: path.resolve(__dirname, 'dist'),
    },
+   devtool: 'inline-source-map',
    plugins: [new MiniCssExtractPlugin({
       filename:"style.css"
    })],
