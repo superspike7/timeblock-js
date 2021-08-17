@@ -59,11 +59,11 @@ const timeBlockComponent = (obj) => {
 
 };
 
-const task = (time, title, description, type) => {
-  const getTime = () => time; 
-  const getTitle = () => title; 
-  const getDescription = () => description; 
-  const getType= () => type; 
+const task = (obj) => {
+  const getTime = () => obj.time; 
+  const getTitle = () => obj.title; 
+  const getDescription = () => obj.description; 
+  const getType= () => obj.type; 
   
 
   return {
