@@ -61,8 +61,8 @@ const timeBlockComponent = (obj) => {
 
 const task = (obj) => {
   const getTime = () => obj.time; 
-  const getTitle = () => obj.title; 
-  const getDescription = () => obj.description; 
+  const getTitle = () => obj.title || "no title"; 
+  const getDescription = () => obj.description || "no description"; 
   const getType= () => obj.type; 
   
 
@@ -75,19 +75,18 @@ const task = (obj) => {
 
 };
 
-const taskComponent = (time, width) => {
+const taskComponent = (obj) => {
 
-  const createTask = () => {
+  const task = () => {
     const task = document.createElement('div');
     task.classList.add('bg-blue-300');
-    task.classList.add(`h-${time}`, `w-${width}`);
-    taskGrid.appendChild(task);
+    task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
+    return task;
   }
 
 
   return {
-    taskGrid,
-    createTask
+    task
   };
 
 };
@@ -97,10 +96,16 @@ var block = {
   sleepTime: 21
 };
 
+var newTask = task({
+  time: "1h",
+  type: "full"
+})
+
 var test = timeBlock(block);
 document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid());
 document.querySelector('.main-grid').appendChild(timeBlockComponent(test).taskGrid());
-
+document.querySelector('.task-grid').appendChild(taskComponent(newTask).task());
+document.querySelector('.task-grid').appendChild(taskComponent(task({time: "30m", type: "1/2"})).task());
 
 // document.querySelector('.main-grid').appendChild(test.component().grid);
 // document.querySelector('.main-grid').appendChild(taskComponent().taskGrid);
