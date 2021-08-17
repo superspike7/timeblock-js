@@ -27,24 +27,34 @@ const timeBlock = (obj) => {
 const timeBlockComponent = (obj) => {
 
   const timeGrid = () => {
-
-  const grid = document.createElement('div');
-    grid.classList.add('grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
+    const grid = document.createElement('div');
+    grid.classList.add('time-grid', 'grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
 
     obj.range().forEach( n => {
       const time = document.createElement('div');
       time.innerHTML = n;
-      time.classList.add('bg-gray-800',
+      time.classList.add('bg-gray-700',
                          'text-gray-100', 'col-span-1',
                          'col-span-1', 'h-56', 'flex',
                          'items-center', 'justify-center',
                          'text-7xl');
       grid.appendChild(time);
     });
+    return grid;
+  };
+
+  const taskGrid = () => {
+    const grid = document.createElement('div');
+    grid.classList.add('task-grid', 'bg-gray-400',
+                       'border-blue-500','h-10',
+                       'col-start-2', 'col-span-3',
+                       'gap-px', 'grid');
+    return grid;
   };
 
   return {
-    timeGrid
+    timeGrid,
+    taskGrid
   };
 
 };
@@ -66,10 +76,6 @@ const task = (time, title, description, type) => {
 };
 
 const taskComponent = (time, width) => {
-  const taskGrid = document.createElement('div');
-  taskGrid.classList.add('bg-gray-400','border-blue-500',
-                         'h-10', 'col-start-2', 'col-span-3',
-                         'gap-px', 'grid');
 
   const createTask = () => {
     const task = document.createElement('div');
@@ -92,7 +98,8 @@ var block = {
 };
 
 var test = timeBlock(block);
-document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid);
+document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid());
+document.querySelector('.main-grid').appendChild(timeBlockComponent(test).taskGrid());
 
 
 // document.querySelector('.main-grid').appendChild(test.component().grid);
