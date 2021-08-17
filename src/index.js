@@ -34,11 +34,11 @@ const timeBlockComponent = (range) => {
     range.forEach( n => {
       const time = document.createElement('div');
       time.innerHTML = n;
-      time.classList.add('bg-blue-500',
-                         'text-white', 'col-span-1',
+      time.classList.add('bg-gray-800',
+                         'text-gray-100', 'col-span-1',
                          'col-span-1', 'h-56', 'flex',
                          'items-center', 'justify-center',
-                         'text-5xl');
+                         'text-7xl');
       grid.appendChild(time);
     });
   }; 
@@ -59,15 +59,18 @@ const taskComponent = () => {
                          'h-10', 'col-start-2', 'col-span-3',
                          'gap-px', 'grid');
 
-  const createTask = (height) => {
+  const createTask = (height, width) => {
     const task = document.createElement('div');
     task.classList.add('bg-blue-300');
-    task.classList.add(`h-${height}`);
+    task.classList.add(`h-${height}`, `w-${width}`);
     taskGrid.appendChild(task);
   }
 
-  createTask("56");
-  createTask("10m");
+
+  createTask("1h", "full");
+  createTask("10m", "1/2");
+  createTask("1h", "1/2");
+  createTask("1h", "full");
 
   return {
     taskGrid
