@@ -2,11 +2,11 @@ import "./style.css"
 
 "use strict";
 
-const timeBlock = (wakeTime, sleepTime) => {
+const timeBlock = (obj) => {
 
   const range = () => {
     let arr = [];
-    for(let i = Number(wakeTime); i <= Number(sleepTime); i++) {
+    for(let i = Number(obj.wakeTime); i <= Number(obj.sleepTime); i++) {
       arr.push(i);
     }
     return arr;
@@ -17,21 +17,21 @@ const timeBlock = (wakeTime, sleepTime) => {
   };
 
   return {
-    component
+    component,
+    range
   };
   
 };
 
 
-const timeBlockComponent = (range) => {
+const timeBlockComponent = (obj) => {
+
+  const timeGrid = () => {
+
   const grid = document.createElement('div');
-
-  const setRowTemplate = () => { 
     grid.classList.add('grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
-  }; 
 
-  const setTimes = () => {
-    range.forEach( n => {
+    obj.range().forEach( n => {
       const time = document.createElement('div');
       time.innerHTML = n;
       time.classList.add('bg-gray-800',
@@ -41,44 +41,63 @@ const timeBlockComponent = (range) => {
                          'text-7xl');
       grid.appendChild(time);
     });
-  }; 
-
-  setRowTemplate();
-  setTimes();
-
+  };
 
   return {
-    grid
+    timeGrid
   };
 
 };
 
-const taskComponent = () => {
+const task = (time, title, description, type) => {
+  const getTime = () => time; 
+  const getTitle = () => title; 
+  const getDescription = () => description; 
+  const getType= () => type; 
+  
+
+  return {
+    getTime,
+    getTitle,
+    getDescription,
+    getType
+  }
+
+};
+
+const taskComponent = (time, width) => {
   const taskGrid = document.createElement('div');
   taskGrid.classList.add('bg-gray-400','border-blue-500',
                          'h-10', 'col-start-2', 'col-span-3',
                          'gap-px', 'grid');
 
-  const createTask = (height, width) => {
+  const createTask = () => {
     const task = document.createElement('div');
     task.classList.add('bg-blue-300');
-    task.classList.add(`h-${height}`, `w-${width}`);
+    task.classList.add(`h-${time}`, `w-${width}`);
     taskGrid.appendChild(task);
   }
 
 
-  createTask("1h", "full");
-  createTask("10m", "1/2");
-  createTask("1h", "1/2");
-  createTask("1h", "full");
-
   return {
-    taskGrid
+    taskGrid,
+    createTask
   };
 
 };
 
-var test = timeBlock(4, 21);
-document.querySelector('.main-grid').appendChild(test.component().grid);
-document.querySelector('.main-grid').appendChild(taskComponent().taskGrid);
+var block = {
+  wakeTime: 5,
+  sleepTime: 21
+};
 
+var test = timeBlock(block);
+document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid);
+
+
+// document.querySelector('.main-grid').appendChild(test.component().grid);
+// document.querySelector('.main-grid').appendChild(taskComponent().taskGrid);
+// taskComponent().createTask("1h", "full");
+
+// TODO: 
+// refactor components to recieve objects as parameters.
