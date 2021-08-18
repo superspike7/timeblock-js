@@ -2,7 +2,8 @@ import "./style.css"
 
 "use strict";
 
-const timeBlock = (obj) => {
+const TimeBlock = (obj) => {
+  const tasks = [];
 
   const range = () => {
     let arr = [];
@@ -12,13 +13,18 @@ const timeBlock = (obj) => {
     return arr;
   };
 
-  const component = () => { 
-    return timeBlockComponent(range());
+  const getTasks = () => {
+    return tasks
+  };
+
+  const addTask = (taskObj) => {
+    tasks.push(taskObj);
   };
 
   return {
-    component,
-    range
+    range,
+    getTasks,
+    addTask
   };
   
 };
@@ -49,21 +55,42 @@ const timeBlockComponent = (obj) => {
                        'border-blue-500','h-10',
                        'col-start-2', 'col-span-3',
                        'gap-px', 'grid');
+
     return grid;
   };
 
+  const renderTasks = () => {
+    const grid = document.querySelector('.task-grid');
+    grid.innerHTML = "";
+
+    obj.getTasks().forEach(task => {
+      const taskElement = taskComponent(task).getTaskElement();
+      grid.append(taskElement);
+    });
+
+  };
+
+  const renderGrids = () => {
+    const mainGrid = document.querySelector('.main-grid');
+
+    mainGrid.append(timeGrid());
+    mainGrid.append(taskGrid());
+  }
+
   return {
     timeGrid,
-    taskGrid
+    taskGrid,
+    renderTasks,
+    renderGrids
   };
 
 };
 
-const task = (obj) => {
+const Task = (obj) => {
   const getTime = () => obj.time; 
   const getTitle = () => obj.title || "no title"; 
   const getDescription = () => obj.description || "no description"; 
-  const getType= () => obj.type; 
+  const getType = () => obj.type; 
   
 
   return {
@@ -77,7 +104,7 @@ const task = (obj) => {
 
 const taskComponent = (obj) => {
 
-  const task = () => {
+  const getTaskElement = () => {
     const task = document.createElement('div');
     task.classList.add('bg-blue-300');
     task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
@@ -86,7 +113,7 @@ const taskComponent = (obj) => {
 
 
   return {
-    task
+    getTaskElement
   };
 
 };
@@ -96,20 +123,55 @@ var block = {
   sleepTime: 21
 };
 
-var newTask = task({
+var newTask = Task({
   time: "1h",
   type: "full"
 })
 
-var test = timeBlock(block);
-document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid());
-document.querySelector('.main-grid').appendChild(timeBlockComponent(test).taskGrid());
-document.querySelector('.task-grid').appendChild(taskComponent(newTask).task());
-document.querySelector('.task-grid').appendChild(taskComponent(task({time: "30m", type: "1/2"})).task());
+var test = TimeBlock(block);
+// document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid());
+// document.querySelector('.main-grid').appendChild(timeBlockComponent(test).taskGrid());
+// document.querySelector('.task-grid').appendChild(taskComponent(newTask).task());
+// document.querySelector('.task-grid').appendChild(taskComponent(task({time: "30m", type: "1/2"})).task());
+timeBlockComponent(test).renderGrids();
 
-// document.querySelector('.main-grid').appendChild(test.component().grid);
-// document.querySelector('.main-grid').appendChild(taskComponent().taskGrid);
-// taskComponent().createTask("1h", "full");
+document.querySelector('.task-btn').addEventListener('click', function(){
+  test.addTask(newTask);
+  timeBlockComponent(test).renderTasks();
+  console.log(test.getTasks());
+});
+
+
 
 // TODO: 
-// refactor components to recieve objects as parameters.
+// add DOM controller module
+
+// PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
+
+var EventManager = new (function() {
+  var events = {};
+
+  this.publish = function(name, data) {
+    var handlers = events[name];
+    if(!!handlers === false) return;
+    handlers.forEach(function(handler) {
+      handler.call(this, data);
+    });
+  };
+
+  this.subscribe = function(name, handler) {
+    var handlers = events[name];
+    if(!!handlers === false) {
+      handlers = events[name] = [];
+    }
+    handlers.push(handler);
+  };
+
+  this.unsubscribe = function(name, handler) {
+    var handlers = events[name];
+    if(!!handlers === false) return;
+
+    var handlerIdx = handlers.indexOf(handler);
+    handlers.splice(handlerIdx);
+  };
+});
