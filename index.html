@@ -25,6 +25,62 @@
   <div class="main-grid lg:w-1/2 h-80v mx-auto mt-14 overflow-y-auto grid grid-cols-4 bg-red-50">
 
   </div>
+
+  <!-- Modal  -->
+    <div class="task-modal flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-opacity-30 bg-gray-800 ">
+      <div class="bg-white rounded-lg w-1/2">
+        <div class="flex flex-col items-start p-4">
+          <div class="flex items-center w-full justify-center">
+            <div class="text-gray-900 font-medium text-xl">Add Task</div>
+          </div>
+          <hr>
+
+          <div class="form py-2 w-full flex flex-wrap">
+            <div class="">
+                <label for="task-title" class="text-gray-800">
+                  Time 
+                </label>
+                <input type="time" id="task-time" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="minutes"/>
+            </div>
+
+            <div class="">
+                <label for="task-title" class="text-gray-800">
+                  title 
+                </label>
+                <input type="text" id="task-title" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="task title"/>
+            </div>
+
+            <div class="">
+              <input type="radio" id="task-description" class="focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" value="deepwork" />
+              <label for="deepwork" class="text-gray-800">
+                type 
+              </label>
+              <input type="radio" id="task-description" class="focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" value="deepwork" />
+              <label for="deepwork" class="text-gray-800">
+                type 
+              </label>
+            </div>
+
+            <div class="">
+                <label for="description" class="text-gray-800">
+                  description 
+                </label>
+                <input type="text" id="task-description" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="task description"/>
+            </div>
+          </div>
+
+          <hr>
+          <div class="ml-auto">
+            <button class="task-submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Agree
+            </button>
+            <button class="close-modal bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   
   <script src="bundle.js"></script>
 </body>
