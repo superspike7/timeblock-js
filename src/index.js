@@ -148,7 +148,14 @@ document.querySelector('.close-modal').addEventListener('click', function(){
 
 document.querySelector('.task-submit').addEventListener('click', function(){
   const taskTitle = document.querySelector('#task-title').value;
+  const taskDuration = Array.from(document.querySelectorAll('[name="task-duration"]')).map(x => x.value);
+  const taskType = document.querySelector('[name="task-type"]:checked').value;
+  const taskDescription = document.querySelector('#task-description').value;
+
   console.log(taskTitle);
+  console.log(taskDuration);
+  console.log(taskType);
+  console.log(taskDescription);
 });
 
 
