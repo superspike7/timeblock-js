@@ -88,14 +88,14 @@ const timeBlockComponent = (obj) => {
 const Task = (obj) => {
   const getTime = () => obj.time; 
   const getTitle = () => obj.title || "no title"; 
-  const getDescription = () => {
-    if (obj.description == "deepWork"){
+  const getType = () => {
+    if (obj.type == "deepWork"){
       return "deepWork";
-    } else if (obj.description == "shallowWork"){
+    } else if (obj.type == "shallowWork"){
       return "shallowWork";
     }
   }; 
-  const getType = () => obj.type; 
+  const getDescription = () => obj.description; 
   const isComplete = () => obj.completed || false ; 
   
 
@@ -113,8 +113,21 @@ const taskComponent = (obj) => {
 
   const getTaskElement = () => {
     const task = document.createElement('div');
-    task.classList.add('bg-blue-300');
+    const title = document.createElement('h1');
+    const description = document.createElement('p');
+    task.classList.add('bg-blue-300', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1');
     task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
+
+    title.classList.add('text-xl', 'font-semibold', 'text-gray-900', 'shadow-sm');
+
+    description.classList.add('text-md', 'font-light', 'text-gray-700');
+
+    title.textContent = obj.getTitle();
+    description.textContent = obj.getDescription();
+
+    task.appendChild(title);
+    task.appendChild(description);
+
     return task;
   }
 
