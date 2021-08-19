@@ -27,7 +27,7 @@
   </div>
 
   <!-- Modal  -->
-    <div class="task-modal flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-opacity-30 bg-gray-800 ">
+    <div class="task-modal flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-opacity-30 bg-gray-800 hidden">
       <div class="bg-white rounded-lg w-1/2">
         <div class="flex flex-col items-start p-4">
           <div class="flex items-center w-full justify-center">
@@ -45,6 +45,7 @@
               <span class="text-gray-700">Task Duration</span>
                 <div class="bg-white rounded-md w-40 flex justify-center items-center">
                   <select name="task-duration" class="bg-transparent text-xl appearance-none outline-none">
+                    <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
