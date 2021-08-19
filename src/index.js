@@ -51,9 +51,8 @@ const timeBlockComponent = (obj) => {
 
   const taskGrid = () => {
     const grid = document.createElement('div');
-    grid.classList.add('task-grid', 'bg-gray-400',
-                       'border-blue-500','h-10',
-                       'col-start-2', 'col-span-3',
+    grid.classList.add('task-grid', 'border-blue-500',
+                       'h-10', 'col-start-2', 'col-span-3',
                        'gap-px', 'grid');
 
     return grid;
@@ -91,13 +90,15 @@ const Task = (obj) => {
   const getTitle = () => obj.title || "no title"; 
   const getDescription = () => obj.description || "no description"; 
   const getType = () => obj.type; 
+  const isComplete = () => obj.completed || false ; 
   
 
   return {
     getTime,
     getTitle,
     getDescription,
-    getType
+    getType,
+    isComplete
   }
 
 };
@@ -136,11 +137,19 @@ var test = TimeBlock(block);
 timeBlockComponent(test).renderGrids();
 
 document.querySelector('.task-btn').addEventListener('click', function(){
-  test.addTask(newTask);
-  timeBlockComponent(test).renderTasks();
-  console.log(test.getTasks());
+  const taskModal = document.querySelector('.task-modal');
+  taskModal.classList.toggle("hidden");
 });
 
+document.querySelector('.close-modal').addEventListener('click', function(){
+  const taskModal = document.querySelector('.task-modal');
+  taskModal.classList.toggle("hidden");
+});
+
+document.querySelector('.task-submit').addEventListener('click', function(){
+  const taskTitle = document.querySelector('#task-title').value;
+  console.log(taskTitle);
+});
 
 
 // TODO: 
