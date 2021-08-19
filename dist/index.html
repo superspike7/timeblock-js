@@ -35,38 +35,57 @@
           </div>
           <hr>
 
-          <div class="form py-2 w-full flex flex-wrap">
-            <div class="">
-                <label for="task-title" class="text-gray-800">
-                  Time 
+          <div class="w-3/4 mx-auto p-4 bg-gray-100">
+            <label class="block">
+              <span class="text-gray-700">Title</span>
+              <input id="task-title" class="form-input mt-1 block w-full rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Book Reading">
+            </label>
+
+            <label class="block mt-4">
+              <span class="text-gray-700">Task Duration</span>
+                <div class="bg-white rounded-md w-40 flex justify-center items-center">
+                  <select name="task-duration" class="bg-transparent text-xl appearance-none outline-none">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">10</option>
+                    <option value="12">12</option>
+                  </select>
+                  <span class="text-xl mr-3">:</span>
+                  <select name="minutes" class="bg-transparent text-xl appearance-none outline-none mr-4">
+                    <option value="0">00</option>
+                    <option value="30">30</option>
+                  </select>
+                  <span class="text-xl mr-3">Hrs</span>
+                </div>
+            </label>
+
+            <div class="mt-4">
+              <span class="text-gray-700">Task Type</span>
+              <div class="mt-2">
+                <label class="inline-flex items-center">
+                  <input type="radio" class="form-radio border border-black" name="taskType" value="deepWork">
+                  <span class="ml-2">Deep Work</span>
                 </label>
-                <input type="time" id="task-time" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="minutes"/>
+                <label class="inline-flex items-center ml-6">
+                  <input type="radio" class="form-radio border border-black" name="taskType" value="shallowWork">
+                  <span class="ml-2">Shallow Work</span>
+                </label>
+              </div>
             </div>
 
-            <div class="">
-                <label for="task-title" class="text-gray-800">
-                  title 
-                </label>
-                <input type="text" id="task-title" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="task title"/>
-            </div>
+            <label class="block mt-4">
+              <span class="text-gray-700">Description</span>
+              <textarea class="form-textarea mt-1 block w-full border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" rows="3" placeholder="Read the book Ego is The Enemy by Ryan Holiday"></textarea>
+            </label>            
 
-            <div class="">
-              <input type="radio" id="task-description" class="focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" value="deepwork" />
-              <label for="deepwork" class="text-gray-800">
-                type 
-              </label>
-              <input type="radio" id="task-description" class="focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" value="deepwork" />
-              <label for="deepwork" class="text-gray-800">
-                type 
-              </label>
-            </div>
-
-            <div class="">
-                <label for="description" class="text-gray-800">
-                  description 
-                </label>
-                <input type="text" id="task-description" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="title" placeholder="task description"/>
-            </div>
           </div>
 
           <hr>
