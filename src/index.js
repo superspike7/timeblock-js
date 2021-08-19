@@ -88,7 +88,13 @@ const timeBlockComponent = (obj) => {
 const Task = (obj) => {
   const getTime = () => obj.time; 
   const getTitle = () => obj.title || "no title"; 
-  const getDescription = () => obj.description || "no description"; 
+  const getDescription = () => {
+    if (obj.description == "deepWork"){
+      return "deepWork";
+    } else if (obj.description == "shallowWork"){
+      return "shallowWork";
+    }
+  }; 
   const getType = () => obj.type; 
   const isComplete = () => obj.completed || false ; 
   
@@ -124,16 +130,7 @@ var block = {
   sleepTime: 21
 };
 
-var newTask = Task({
-  time: "1h",
-  type: "full"
-})
-
 var test = TimeBlock(block);
-// document.querySelector('.main-grid').appendChild(timeBlockComponent(test).timeGrid());
-// document.querySelector('.main-grid').appendChild(timeBlockComponent(test).taskGrid());
-// document.querySelector('.task-grid').appendChild(taskComponent(newTask).task());
-// document.querySelector('.task-grid').appendChild(taskComponent(task({time: "30m", type: "1/2"})).task());
 timeBlockComponent(test).renderGrids();
 
 document.querySelector('.task-btn').addEventListener('click', function(){
@@ -147,15 +144,24 @@ document.querySelector('.close-modal').addEventListener('click', function(){
 });
 
 document.querySelector('.task-submit').addEventListener('click', function(){
+  const taskModal = document.querySelector('.task-modal');
   const taskTitle = document.querySelector('#task-title').value;
-  const taskDuration = Array.from(document.querySelectorAll('[name="task-duration"]')).map(x => x.value);
+  const taskDuration = Array.from(document.querySelectorAll('[name="task-duration"]')).map(x => x.value.padStart(2, "0")).join('');
   const taskType = document.querySelector('[name="task-type"]:checked').value;
   const taskDescription = document.querySelector('#task-description').value;
 
-  console.log(taskTitle);
-  console.log(taskDuration);
-  console.log(taskType);
-  console.log(taskDescription);
+
+  const obj = {
+    time: taskDuration,
+    title: taskTitle,
+    description: taskDescription,
+    type: taskType
+  }
+  const newTask = Task(obj);
+  test.addTask(newTask);
+  timeBlockComponent(test).renderTasks();
+
+  taskModal.classList.toggle("hidden");
 });
 
 
