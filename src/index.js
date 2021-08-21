@@ -5,8 +5,6 @@ import "./style.css"
 const TimeBlock = (obj) => {
   const tasks = [];
 
-  const getName = () => obj.name;
-
   const getDate = () => obj.date;
 
   const range = () => {
@@ -28,9 +26,39 @@ const TimeBlock = (obj) => {
   return {
     range,
     getTasks,
-    addTask
+    addTask,
+    getDate
   };
   
+};
+
+const TimeBlockController = () => {
+  const blocks = [];
+  let currentBlock = '';
+
+  const addBlock = obj => {
+    blocks.push(obj);
+  };
+
+  const setCurrentBlock = obj => {
+    const found = blocks.find(block => block.date == obj.date);
+    currentBlock = found;
+  };
+
+  const getBlocks = () => {
+    return blocks;
+  }
+
+  const getCurrentBlock = () => {
+    return currentBlock;
+  };
+
+  return {
+    addBlock,
+    setCurrentBlock,
+    getBlocks,
+    getCurrentBlock
+  };
 };
 
 
@@ -94,9 +122,9 @@ const Task = (obj) => {
   const getTitle = () => obj.title || "no title"; 
   const getType = () => {
     if (obj.type == "deepWork"){
-      return "deepWork";
+      return "full";
     } else if (obj.type == "shallowWork"){
-      return "shallowWork";
+      return "1/2";
     }
   }; 
   const getDescription = () => obj.description; 
@@ -119,7 +147,7 @@ const taskComponent = (obj) => {
     const task = document.createElement('div');
     const title = document.createElement('h1');
     const description = document.createElement('p');
-    task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1');
+    task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1', 'text-center');
     task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
 
     title.classList.add('text-xl', 'font-semibold', 'text-gray-900', 'shadow-sm');
