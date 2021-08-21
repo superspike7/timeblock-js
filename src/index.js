@@ -5,6 +5,10 @@ import "./style.css"
 const TimeBlock = (obj) => {
   const tasks = [];
 
+  const getName = () => obj.name;
+
+  const getDate = () => obj.date;
+
   const range = () => {
     let arr = [];
     for(let i = Number(obj.wakeTime); i <= Number(obj.sleepTime); i++) {
@@ -115,7 +119,7 @@ const taskComponent = (obj) => {
     const task = document.createElement('div');
     const title = document.createElement('h1');
     const description = document.createElement('p');
-    task.classList.add('bg-blue-300', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1');
+    task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1');
     task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
 
     title.classList.add('text-xl', 'font-semibold', 'text-gray-900', 'shadow-sm');
@@ -170,16 +174,20 @@ document.querySelector('.task-submit').addEventListener('click', function(){
     description: taskDescription,
     type: taskType
   }
+
+  // clear inputs 
+
   const newTask = Task(obj);
   test.addTask(newTask);
   timeBlockComponent(test).renderTasks();
 
   taskModal.classList.toggle("hidden");
+  document.querySelector('#task-form').reset();
 });
 
 
 // TODO: 
-// add DOM controller module
+// local storage
 
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
 
