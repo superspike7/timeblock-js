@@ -23,41 +23,56 @@ const TimeBlock = (obj) => {
     tasks.push(taskObj);
   };
 
+  const getJson = () => {
+    const tasksJson = tasks.map(task => task.getJson());
+    return {
+      date: getDate(),
+      tasks: tasksJson,
+      wakeTime: obj.wakeTime,
+      sleepTime: obj.sleepTime,
+      range: range()
+    }
+  };
+
   return {
     range,
     getTasks,
     addTask,
-    getDate
+    getDate,
+    getJson
   };
   
 };
-
+// ADD local storage
 const TimeBlockController = (() => {
-  const blocks = [];
   let currentBlock = '';
+  const blocks = [];
+
 
   const addBlock = obj => {
     blocks.push(obj);
   };
 
   const setCurrentBlock = obj => {
-    const found = blocks.find(block => block.date == obj.date);
+    const found = getBlocks().find(block => block.date == obj.date);
     currentBlock = found;
   };
 
-  const getBlocks = () => {
-    return blocks;
-  }
+  const getBlocks = () => blocks;
 
-  const getCurrentBlock = () => {
-    return currentBlock;
-  };
+  const getCurrentBlock = () => currentBlock;
+
+  const log = () => {
+    console.log(currentBlock.getJson());
+    console.log(JSON.stringify(currentBlock.getJson()));
+  }
 
   return {
     addBlock,
     setCurrentBlock,
     getBlocks,
-    getCurrentBlock
+    getCurrentBlock,
+    log
   };
 })();
 
@@ -129,6 +144,16 @@ const Task = (obj) => {
   }; 
   const getDescription = () => obj.description; 
   const isComplete = () => obj.completed || false ; 
+
+  const getJson = () =>  {
+    return {
+     time: getTime(),
+     title: getTitle(),
+     type: getType(),
+     description: getDescription(),
+     completed: isComplete()
+    }
+  };
   
 
   return {
@@ -136,7 +161,8 @@ const Task = (obj) => {
     getTitle,
     getDescription,
     getType,
-    isComplete
+    isComplete,
+    getJson
   }
 
 };
@@ -222,6 +248,7 @@ document.querySelector('.task-submit').addEventListener('click', function(){
   const newTask = Task(obj);
   TimeBlockController.getCurrentBlock().addTask(newTask);
   timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  TimeBlockController.log();
 
   taskModal.classList.toggle("hidden");
   document.querySelector('#task-form').reset();
