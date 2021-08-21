@@ -10,9 +10,11 @@
 <body>
   <div class="nav h-14 bg-green-400 flex items-center justify-between">
     <div class="ml-9 items-center flex">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-current text-gray-800 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
+      <button id="side-nav-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-current text-gray-800 cursor-pointer hover:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
       <h1 class="ml-10 text-4xl text-white font-light cursor-pointer">
         Timeblock
       </h1>
@@ -22,13 +24,32 @@
     </div>
   </div>
 
-  <h1 id="currentBlock-date" class="text-4xl text-center font-semibold text-gray-900 mt-2">August 12, 2021</h1>
+  <h1 id="currentBlock-date" class="text-4xl text-center font-semibold text-gray-900 mt-2">August 21, 2021</h1>
 
   <div class="main-grid lg:w-1/2 h-80v mx-auto mt-3 overflow-y-auto grid grid-cols-4 bg-red-50">
 
   </div>
 
-  <!-- Modal  -->
+  <!-- side nav -->
+
+
+      <div id="side-nav" class="flex flex-col sm:flex-row sm:justify-around absolute top-14 bg-green-200 ">
+          <div class="w-72 h-screen">
+              <nav id="blocks-list" class="mt-10 px-6 ">
+                  <ul class="flex flex-col text-gray-800 text-center text-2xl">
+                    <li class="my-1">
+                      <span class="rounded-md px-8 selected">August 21, 2021</span>
+                    </li>
+                    <li class="my-1">
+                      <span class="rounded-md px-8 not-selected">August 22, 2021</span>
+                    </li>
+                  </ul>
+              </nav>
+          </div>
+      </div>
+
+
+  <!-- Task Form Modal  -->
     <div class="task-modal flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-opacity-30 bg-gray-800 hidden">
       <div class="bg-white rounded-lg w-1/2">
         <div class="flex flex-col items-start p-4">
