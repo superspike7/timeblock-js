@@ -32,7 +32,7 @@ const TimeBlock = (obj) => {
   
 };
 
-const TimeBlockController = () => {
+const TimeBlockController = (() => {
   const blocks = [];
   let currentBlock = '';
 
@@ -59,7 +59,7 @@ const TimeBlockController = () => {
     getBlocks,
     getCurrentBlock
   };
-};
+})();
 
 
 const timeBlockComponent = (obj) => {
@@ -170,13 +170,27 @@ const taskComponent = (obj) => {
 
 };
 
-var block = {
+var block1 = {
   wakeTime: 5,
-  sleepTime: 21
+  sleepTime: 21,
+  date: 'August 21, 2021'
 };
 
-var test = TimeBlock(block);
-timeBlockComponent(test).renderGrids();
+var block2 = {
+  wakeTime: 9,
+  sleepTime: 20,
+  date: 'August 22, 2021'
+};
+
+var test1 = TimeBlock(block1);
+var test2 = TimeBlock(block2);
+
+TimeBlockController.addBlock(test1);
+TimeBlockController.addBlock(test2);
+TimeBlockController.setCurrentBlock("August 21, 2021");
+
+
+timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
 
 document.querySelector('.task-btn').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
@@ -206,11 +220,15 @@ document.querySelector('.task-submit').addEventListener('click', function(){
   // clear inputs 
 
   const newTask = Task(obj);
-  test.addTask(newTask);
-  timeBlockComponent(test).renderTasks();
+  TimeBlockController.getCurrentBlock().addTask(newTask);
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
 
   taskModal.classList.toggle("hidden");
   document.querySelector('#task-form').reset();
+});
+
+document.querySelector('#side-nav-btn').addEventListener('click', function(){
+  document.querySelector('#side-nav').classList.toggle('hidden');
 });
 
 
