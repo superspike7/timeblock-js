@@ -43,15 +43,15 @@ const TimeBlock = (obj) => {
   };
   
 };
-// ADD local storage
+
 const TimeBlockController = (() => {
   let currentBlock = '';
-  const blocks = [];
+  // const blocks = [];
   const jsonBlocks = JSON.parse(localStorage.getItem('blocks')) || [];
 
 
   const addBlock = obj => {
-    blocks.push(obj);
+    // blocks.push(obj);
     jsonBlocks.push(obj.getJson());
     localStorage["blocks"] = JSON.stringify(jsonBlocks);
   };
@@ -61,7 +61,7 @@ const TimeBlockController = (() => {
     currentBlock = found;
   };
 
-  const getBlocks = () => blocks;
+  const getBlocks = () => jsonBlocks;
 
   const getCurrentBlock = () => currentBlock;
 
@@ -79,6 +79,35 @@ const TimeBlockController = (() => {
     log
   };
 })();
+
+const sideNavComponent = (objs) => {
+  const getListItems = () => {
+    const list = document.createElement('ul');
+    list.classList.add('flex', 'flex-col', 'text-gray-800', 'text-center', 'text-2xl', 'overflow-y-auto');
+    objs.forEach(obj => {
+      const item = document.createElement('li');
+      const date = document.createElement('span');
+      item.classList.add('my-1');
+      date.classList.add('rounded-md', 'px-8', `${obj.date == TimeBlockController.getCurrentBlock().date ? 'selected' : 'not-selected'}`);
+      date.innerText = obj.date;
+      item.appendChild(date);
+      list.appendChild(item);
+    });
+    return list;
+  };
+
+  const renderList = () => {
+    const nav = document.querySelector('#blocks-list');
+    nav.innerHTML = "";
+    nav.append(getListItems());
+    console.log(getListItems());
+  };
+
+  return {
+    renderList
+  }
+
+};
 
 
 const timeBlockComponent = (obj) => {
@@ -215,13 +244,11 @@ var block2 = {
 var test1 = TimeBlock(block1);
 var test2 = TimeBlock(block2);
 
-localStorage.clear();
-
 TimeBlockController.addBlock(test1);
 TimeBlockController.addBlock(test2);
 TimeBlockController.setCurrentBlock("August 21, 2021");
 
-
+sideNavComponent(TimeBlockController.getBlocks()).renderList();
 timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
 
 document.querySelector('.task-btn').addEventListener('click', function(){
@@ -266,7 +293,6 @@ document.querySelector('#side-nav-btn').addEventListener('click', function(){
 
 
 // TODO: 
-// local storage
 
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
 
@@ -297,3 +323,5 @@ var EventManager = new (function() {
     handlers.splice(handlerIdx);
   };
 });
+
+localStorage.clear();
