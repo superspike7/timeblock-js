@@ -47,14 +47,17 @@ const TimeBlock = (obj) => {
 const TimeBlockController = (() => {
   let currentBlock = '';
   const blocks = [];
+  const jsonBlocks = JSON.parse(localStorage.getItem('blocks')) || [];
 
 
   const addBlock = obj => {
     blocks.push(obj);
+    jsonBlocks.push(obj.getJson());
+    localStorage["blocks"] = JSON.stringify(jsonBlocks);
   };
 
-  const setCurrentBlock = obj => {
-    const found = getBlocks().find(block => block.date == obj.date);
+  const setCurrentBlock = date => {
+    const found = jsonBlocks.find(block => block.date == date);
     currentBlock = found;
   };
 
@@ -63,6 +66,7 @@ const TimeBlockController = (() => {
   const getCurrentBlock = () => currentBlock;
 
   const log = () => {
+    console.log(currentBlock);
     console.log(currentBlock.getJson());
     console.log(JSON.stringify(currentBlock.getJson()));
   }
@@ -83,7 +87,7 @@ const timeBlockComponent = (obj) => {
     const grid = document.createElement('div');
     grid.classList.add('time-grid', 'grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
 
-    obj.range().forEach( n => {
+    obj.range.forEach( n => {
       const time = document.createElement('div');
       time.innerHTML = n;
       time.classList.add('bg-gray-700',
@@ -109,7 +113,7 @@ const timeBlockComponent = (obj) => {
     const grid = document.querySelector('.task-grid');
     grid.innerHTML = "";
 
-    obj.getTasks().forEach(task => {
+    obj.tasks.forEach(task => {
       const taskElement = taskComponent(task).getTaskElement();
       grid.append(taskElement);
     });
@@ -174,14 +178,14 @@ const taskComponent = (obj) => {
     const title = document.createElement('h1');
     const description = document.createElement('p');
     task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1', 'text-center');
-    task.classList.add(`h-${obj.getTime()}`, `w-${obj.getType()}`);
+    task.classList.add(`h-${obj.time}`, `w-${obj.type}`);
 
     title.classList.add('text-xl', 'font-semibold', 'text-gray-900', 'shadow-sm');
 
     description.classList.add('text-md', 'font-light', 'text-gray-700');
 
-    title.textContent = obj.getTitle();
-    description.textContent = obj.getDescription();
+    title.textContent = obj.type;
+    description.textContent = obj.description;
 
     task.appendChild(title);
     task.appendChild(description);
@@ -210,6 +214,8 @@ var block2 = {
 
 var test1 = TimeBlock(block1);
 var test2 = TimeBlock(block2);
+
+localStorage.clear();
 
 TimeBlockController.addBlock(test1);
 TimeBlockController.addBlock(test2);
