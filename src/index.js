@@ -1,3 +1,4 @@
+import { DelegatedPlugin } from "webpack";
 import "./style.css"
 
 "use strict";
@@ -23,7 +24,7 @@ const TimeBlock = (obj) => {
     tasks.push(taskObj);
   };
 
-  const getJson = () => {
+  const getProps = () => {
     const tasksJson = tasks.map(task => task.getJson());
     return {
       date: getDate(),
@@ -39,31 +40,39 @@ const TimeBlock = (obj) => {
     getTasks,
     addTask,
     getDate,
-    getJson
+    getProps
   };
   
 };
 
 const TimeBlockController = (() => {
-  let currentBlock = '';
-  // const blocks = [];
+  const blocks = [];
+// change jsonvariables to props
   const jsonBlocks = JSON.parse(localStorage.getItem('blocks')) || [];
+  let currentBlock =  '';
+  let currentJsonBlock = '';
 
 
   const addBlock = obj => {
-    // blocks.push(obj);
-    jsonBlocks.push(obj.getJson());
+    blocks.push(obj);
+    jsonBlocks.push(obj.getProps());
     localStorage["blocks"] = JSON.stringify(jsonBlocks);
   };
 
   const setCurrentBlock = date => {
-    const found = jsonBlocks.find(block => block.date == date);
-    currentBlock = found;
+    const foundJson = jsonBlocks.find(block => block.date == date);
+    const found = blocks.find(block => block.getDate() == date);
+    currentJsonBlock = foundJson;
+    currentBlock = found; 
   };
 
-  const getBlocks = () => jsonBlocks;
+  const getJsonBlocks = () => jsonBlocks;
 
-  const getCurrentBlock = () => currentBlock;
+  const getBlocks = () => blocks;
+
+  const getCurrentBlock = () => currentBlock || blocks[0];
+
+  const getCurrentJsonBlock = () => currentJsonBlock || jsonBlocks[0];
 
   const log = () => {
     console.log(currentBlock);
@@ -76,7 +85,9 @@ const TimeBlockController = (() => {
     setCurrentBlock,
     getBlocks,
     getCurrentBlock,
-    log
+    log,
+    getJsonBlocks,
+    getCurrentJsonBlock
   };
 })();
 
@@ -88,7 +99,7 @@ const sideNavComponent = (objs) => {
       const item = document.createElement('li');
       const date = document.createElement('span');
       item.classList.add('my-1');
-      date.classList.add('rounded-md', 'px-8', `${obj.date == TimeBlockController.getCurrentBlock().date ? 'selected' : 'not-selected'}`);
+      // date.classList.add('rounded-md', 'px-8', `${obj.date == TimeBlockController.getCurrentJsonBlock().date ? 'selected' : 'not-selected'}`);
       date.innerText = obj.date;
       item.appendChild(date);
       list.appendChild(item);
@@ -100,7 +111,6 @@ const sideNavComponent = (objs) => {
     const nav = document.querySelector('#blocks-list');
     nav.innerHTML = "";
     nav.append(getListItems());
-    console.log(getListItems());
   };
 
   return {
@@ -178,7 +188,7 @@ const Task = (obj) => {
   const getDescription = () => obj.description; 
   const isComplete = () => obj.completed || false ; 
 
-  const getJson = () =>  {
+  const getProps = () =>  {
     return {
      time: getTime(),
      title: getTitle(),
@@ -195,7 +205,7 @@ const Task = (obj) => {
     getDescription,
     getType,
     isComplete,
-    getJson
+    getProps
   }
 
 };
@@ -235,21 +245,12 @@ var block1 = {
   date: 'August 21, 2021'
 };
 
-var block2 = {
-  wakeTime: 9,
-  sleepTime: 20,
-  date: 'August 22, 2021'
-};
-
 var test1 = TimeBlock(block1);
-var test2 = TimeBlock(block2);
 
 TimeBlockController.addBlock(test1);
-TimeBlockController.addBlock(test2);
-TimeBlockController.setCurrentBlock("August 21, 2021");
 
-sideNavComponent(TimeBlockController.getBlocks()).renderList();
-timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
+timeBlockComponent(TimeBlockController.getCurrentJsonBlock()).renderGrids();
 
 document.querySelector('.task-btn').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
@@ -323,5 +324,3 @@ var EventManager = new (function() {
     handlers.splice(handlerIdx);
   };
 });
-
-localStorage.clear();
