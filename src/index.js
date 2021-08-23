@@ -34,8 +34,7 @@ const TimeBlockController = (() => {
 
   const getCurrentBlock = () => currentBlock || blocks[0];
 
-  const getCurrentBlockProps = () => getJsonBlocks().find(block => block.date == getCurrentBlock().getDate());
-
+  const getCurrentBlockProps = () => getJsonBlocks()[0];
 
   return {
     addBlock,

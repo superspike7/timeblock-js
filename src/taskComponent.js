@@ -11,7 +11,7 @@ const taskComponent = (obj) => {
 
     description.classList.add('text-md', 'font-light', 'text-gray-700');
 
-    title.textContent = obj.type;
+    title.textContent = obj.title;
     description.textContent = obj.description;
 
     task.appendChild(title);
