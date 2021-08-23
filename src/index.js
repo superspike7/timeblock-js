@@ -3,47 +3,10 @@ import "./style.css"
 
 "use strict";
 
-const TimeBlock = (obj) => {
-  const tasks = [];
-
-  const getDate = () => obj.date;
-
-  const range = () => {
-    let arr = [];
-    for(let i = Number(obj.wakeTime); i <= Number(obj.sleepTime); i++) {
-      arr.push(i);
-    }
-    return arr;
-  };
-
-  const getTasks = () => {
-    return tasks
-  };
-
-  const addTask = (taskObj) => {
-    tasks.push(taskObj);
-  };
-
-  const getProps = () => {
-    const tasksProps = tasks.map(task => task.getProps());
-    return {
-      date: getDate(),
-      tasks: tasksProps,
-      wakeTime: obj.wakeTime,
-      sleepTime: obj.sleepTime,
-      range: range()
-    }
-  };
-
-  return {
-    range,
-    getTasks,
-    addTask,
-    getDate,
-    getProps
-  };
-  
-};
+import { TimeBlock } from "./timeblock";
+import { Task } from "./task";
+import { sideNavComponent } from "./sidenav";
+import { timeBlockComponent } from "./timeblockComponent";
 
 const TimeBlockController = (() => {
   const blocks = [];
@@ -74,163 +37,19 @@ const TimeBlockController = (() => {
 
   const getCurrentBlockProps = () => getJsonBlocks().find(block => block.date == getCurrentBlock().getDate());
 
+
   return {
     addBlock,
     setCurrentBlock,
     getBlocks,
     getCurrentBlock,
     getJsonBlocks,
-    getCurrentBlockProps
+    getCurrentBlockProps,
+    updateLocalStorage
+
   };
 })();
 
-const sideNavComponent = (objs) => {
-  const getListItems = () => {
-    const list = document.createElement('ul');
-    list.classList.add('flex', 'flex-col', 'text-gray-800', 'text-center', 'text-2xl', 'overflow-y-auto');
-    objs.forEach(obj => {
-      const item = document.createElement('li');
-      const date = document.createElement('span');
-      item.classList.add('my-1');
-      date.classList.add('rounded-md', 'px-8', `${obj.date == TimeBlockController.getCurrentBlock().getDate() ? 'selected' : 'not-selected'}`);
-      date.innerText = obj.date;
-      item.appendChild(date);
-      list.appendChild(item);
-    });
-    return list;
-  };
-
-  const renderList = () => {
-    const nav = document.querySelector('#blocks-list');
-    nav.innerHTML = "";
-    nav.append(getListItems());
-  };
-
-  return {
-    renderList
-  }
-
-};
-
-
-const timeBlockComponent = (obj) => {
-
-  const timeGrid = () => {
-    const grid = document.createElement('div');
-    grid.classList.add('time-grid', 'grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
-
-    obj.range.forEach( n => {
-      const time = document.createElement('div');
-      time.innerHTML = n;
-      time.classList.add('bg-gray-700',
-                         'text-gray-100', 'col-span-1',
-                         'col-span-1', 'h-56', 'flex',
-                         'items-center', 'justify-center',
-                         'text-7xl');
-      grid.appendChild(time);
-    });
-    return grid;
-  };
-
-  const taskGrid = () => {
-    const grid = document.createElement('div');
-    grid.classList.add('task-grid', 'border-blue-500',
-                       'h-10', 'col-start-2', 'col-span-3',
-                       'gap-px', 'grid');
-
-    return grid;
-  };
-
-  const renderTasks = () => {
-    const grid = document.querySelector('.task-grid');
-    grid.innerHTML = "";
-
-    obj.tasks.forEach(task => {
-      const taskElement = taskComponent(task).getTaskElement();
-      grid.append(taskElement);
-    });
-
-  };
-
-  const renderGrids = () => {
-    const mainGrid = document.querySelector('.main-grid');
-
-    mainGrid.append(timeGrid());
-    mainGrid.append(taskGrid());
-  }
-
-  return {
-    timeGrid,
-    taskGrid,
-    renderTasks,
-    renderGrids
-  };
-
-};
-
-const Task = (obj) => {
-  const getTime = () => obj.time; 
-  const getTitle = () => obj.title || "no title"; 
-  const getType = () => {
-    if (obj.type == "deepWork"){
-      return "full";
-    } else if (obj.type == "shallowWork"){
-      return "1/2";
-    }
-  }; 
-  const getDescription = () => obj.description; 
-  const isComplete = () => obj.completed || false ; 
-
-  const getProps = () =>  {
-    return {
-     time: getTime(),
-     title: getTitle(),
-     type: getType(),
-     description: getDescription(),
-     completed: isComplete()
-    }
-  };
-  
-
-  return {
-    getTime,
-    getTitle,
-    getDescription,
-    getType,
-    isComplete,
-    getProps
-  }
-
-};
-
-const taskComponent = (obj) => {
-
-  const getTaskElement = () => {
-    const task = document.createElement('div');
-    const title = document.createElement('h1');
-    const description = document.createElement('p');
-    task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1', 'text-center');
-    task.classList.add(`h-${obj.time}`, `w-${obj.type}`);
-
-    title.classList.add('text-xl', 'font-semibold', 'text-gray-900', 'shadow-sm');
-
-    description.classList.add('text-md', 'font-light', 'text-gray-700');
-
-    title.textContent = obj.type;
-    description.textContent = obj.description;
-
-    task.appendChild(title);
-    task.appendChild(description);
-
-    return task;
-  }
-
-
-  return {
-    getTaskElement
-  };
-
-};
 
 const block1 = {
   wakeTime: 5,
@@ -244,7 +63,6 @@ TimeBlockController.addBlock(test1);
 
 sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
 timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderGrids();
-localStorage.clear()
 
 document.querySelector('.task-btn').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
@@ -275,6 +93,7 @@ document.querySelector('.task-submit').addEventListener('click', function(){
   const newTask = Task(obj);
   // separate current block and blockprops 
   TimeBlockController.getCurrentBlock().addTask(newTask);
+  TimeBlockController.updateLocalStorage();
   timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderTasks();
 
   taskModal.classList.toggle("hidden");
