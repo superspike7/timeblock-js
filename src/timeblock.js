@@ -1,4 +1,4 @@
-const TimeBlock = (obj) => {
+const TimeBlock = function timeBlockConstructor(obj) {
   const tasks = [];
 
   const getDate = () => obj.date;
@@ -11,31 +11,15 @@ const TimeBlock = (obj) => {
     return arr;
   };
 
-  const getTasks = () => {
-    return tasks
-  };
-
-  const addTask = (taskObj) => {
-    tasks.push(taskObj);
-  };
-
-  const getProps = () => {
-    const tasksProps = tasks.map(task => task.getProps());
-    return {
-      date: getDate(),
-      tasks: tasksProps,
-      wakeTime: obj.wakeTime,
-      sleepTime: obj.sleepTime,
-      range: range()
-    }
-  };
+  const tasksProps = tasks.map(task => task.getProps());
 
   return {
-    range,
-    getTasks,
-    addTask,
-    getDate,
-    getProps
+    current: false,
+    date: getDate(),
+    tasks: tasksProps,
+    wakeTime: obj.wakeTime,
+    sleepTime: obj.sleepTime,
+    range: range()
   };
   
 };
