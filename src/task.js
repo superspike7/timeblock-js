@@ -1,4 +1,4 @@
-const Task = (obj) => {
+const Task = function taskConstructor(obj){
   const getTime = () => obj.time; 
   const getTitle = () => obj.title || "no title"; 
   const getType = () => {
@@ -11,25 +11,14 @@ const Task = (obj) => {
   const getDescription = () => obj.description; 
   const isComplete = () => obj.completed || false ; 
 
-  const getProps = () =>  {
-    return {
-     time: getTime(),
-     title: getTitle(),
-     type: getType(),
-     description: getDescription(),
-     completed: isComplete()
-    }
-  };
-  
-
   return {
-    getTime,
-    getTitle,
-    getDescription,
-    getType,
-    isComplete,
-    getProps
-  }
+    time: getTime(),
+    title: getTitle(),
+    type: getType(),
+    description: getDescription(),
+    completed: isComplete()
+  };
+
 
 };
 
