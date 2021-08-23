@@ -51,27 +51,24 @@ const TimeBlockController = (() => {
 })();
 
 
-const block1 = {
-  wakeTime: 5,
-  sleepTime: 21,
-  date: 'August 21, 2021'
-};
-
-const test1 = TimeBlock(block1);
-
-TimeBlockController.addBlock(test1);
-
-sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
-timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderGrids();
-
 document.querySelector('.task-btn').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
   taskModal.classList.toggle("hidden");
 });
 
-document.querySelector('.close-modal').addEventListener('click', function(){
+document.querySelector('.close-task-modal').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
   taskModal.classList.toggle("hidden");
+});
+
+document.querySelector('.add-block-btn').addEventListener('click', function(){
+  const blockModal = document.querySelector('.block-modal');
+  blockModal.classList.toggle("hidden");
+});
+
+document.querySelector('.close-block-modal').addEventListener('click', function(){
+  const blockModal = document.querySelector('.block-modal');
+  blockModal.classList.toggle("hidden");
 });
 
 document.querySelector('.task-submit').addEventListener('click', function(){
@@ -104,8 +101,37 @@ document.querySelector('#side-nav-btn').addEventListener('click', function(){
   document.querySelector('#side-nav').classList.toggle('hidden');
 });
 
+document.querySelector('.block-submit').addEventListener('click', function(){
+  const blockModal = document.querySelector('.block-modal');
+  const blockDate = document.querySelector('[name="block-date"]').value;
+  const blockWakeTime = document.querySelector('[name="wake-time"]').value;
+  const blockSleepTime = document.querySelector('[name="sleep-time"]').value;
+
+
+  const obj = {
+    date: blockDate,
+    wakeTime: blockWakeTime,
+    sleepTime: blockSleepTime 
+  }
+
+  const newBlock = TimeBlock(obj);
+  // separate current block and blockprops 
+  TimeBlockController.addBlock(newBlock);
+
+  sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
+  timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderGrids();
+
+  blockModal.classList.toggle("hidden");
+  document.querySelector('#block-form').reset();
+});
+
+document.querySelector('#side-nav-btn').addEventListener('click', function(){
+  document.querySelector('#side-nav').classList.toggle('hidden');
+});
+
 
 // TODO: 
+// make a form for new block
 
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
 
