@@ -27,7 +27,6 @@ const TimeBlockController = (() => {
   };
 
   const getJsonBlocks = () => {
-    updateLocalStorage();
     return JSON.parse(localStorage.getItem("blocks"))
   };
 
@@ -115,8 +114,8 @@ document.querySelector('.block-submit').addEventListener('click', function(){
   }
 
   const newBlock = TimeBlock(obj);
-  // separate current block and blockprops 
   TimeBlockController.addBlock(newBlock);
+  TimeBlockController.updateLocalStorage();
 
   sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
   timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderGrids();
@@ -129,6 +128,11 @@ document.querySelector('#side-nav-btn').addEventListener('click', function(){
   document.querySelector('#side-nav').classList.toggle('hidden');
 });
 
+
+ sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
+ console.log(TimeBlockController.getJsonBlocks())
+ console.log(TimeBlockController.getCurrentBlockProps())
+ console.log(TimeBlockController.getCurrentBlock())
 
 // TODO: 
 // make a form for new block
