@@ -1,3 +1,5 @@
+var id = 0;
+
 const TimeBlock = function timeBlockConstructor(obj) {
   const tasks = [];
 
@@ -13,13 +15,18 @@ const TimeBlock = function timeBlockConstructor(obj) {
 
   const tasksProps = tasks.map(task => task.getProps());
 
+  const getID = function incrementId() {
+    return id++;
+  }
+
   return {
     current: false,
     date: getDate(),
     tasks: tasksProps,
     wakeTime: obj.wakeTime,
     sleepTime: obj.sleepTime,
-    range: range()
+    range: range(),
+    id: getID()
   };
   
 };
