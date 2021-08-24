@@ -1,4 +1,3 @@
-// import { DelegatedPlugin } from "webpack";
 import "./style.css"
 
 "use strict";
@@ -37,7 +36,7 @@ const TimeBlockController = (function() {
     return found;
   };
 
-  const setCurrentBlock = function setCurrentToSelectedBlock(date) {
+  const setCurrentBlock = function setCurrentToSelectedBlock(id) {
     let blocks = getBlocks();
 
     // unselect all first
@@ -46,7 +45,7 @@ const TimeBlockController = (function() {
     });
 
     blocks.forEach(block => {
-     if (block.date == date) {
+     if (block.id == id) {
        block.current = true;
      }
     });
@@ -126,7 +125,7 @@ document.querySelector('.block-submit').addEventListener('click', function(){
 
   const newBlock = TimeBlock(obj);
   TimeBlockController.addBlock(newBlock);
-  TimeBlockController.setCurrentBlock(newBlock.date);
+  TimeBlockController.setCurrentBlock(newBlock.id);
 
   sideNavComponent(TimeBlockController.getBlocks()).renderList();
   timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
@@ -138,6 +137,17 @@ document.querySelector('.block-submit').addEventListener('click', function(){
 
 document.querySelector('#side-nav-btn').addEventListener('click', function(){
   document.querySelector('#side-nav').classList.toggle('hidden');
+});
+
+document.querySelector('#blocks-list').addEventListener('click', function changeCurrentBlockToSelectedItem(e){
+  if (e.target.classList.contains('not-selected')) {
+    
+  TimeBlockController.setCurrentBlock(e.target.getAttribute('value'));
+
+  sideNavComponent(TimeBlockController.getBlocks()).renderList();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  };
 });
 
 // on load
