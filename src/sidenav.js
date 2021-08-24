@@ -6,7 +6,7 @@ const sideNavComponent = (objs) => {
       const item = document.createElement('li');
       const date = document.createElement('span');
       item.classList.add('my-1');
-      // date.classList.add('rounded-md', 'px-8', `${obj.date == TimeBlockController.getCurrentBlock().getDate() ? 'selected' : 'not-selected'}`);
+      date.classList.add('rounded-md', 'px-8', `${obj.current ? 'selected' : 'not-selected'}`);
       date.innerText = obj.date;
       item.appendChild(date);
       list.appendChild(item);

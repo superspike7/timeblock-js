@@ -8,43 +8,59 @@ import { Task } from "./task";
 import { sideNavComponent } from "./sidenav";
 import { timeBlockComponent } from "./timeblockComponent";
 
-const TimeBlockController = (() => {
-  const blocks = [];
-  let currentBlock =  '';
+// TODO:
+// make dynamic event listeners
 
+const TimeBlockController = (function() {
 
-  const addBlock = obj => {
-    blocks.push(obj);
+  const getList = function listOfLocalStorageTimeBlocks() {
+    if (localStorage["blocks"] == undefined) {
+      localStorage.setItem("blocks", "[]");
+      return localStorage["blocks"];
+    } 
+    return localStorage["blocks"];
   };
 
-  const updateLocalStorage = () => {
-    localStorage["blocks"] = JSON.stringify(blocks.map(block => block.getProps()));
-  }
-
-  const setCurrentBlock = date => {
-    const found = blocks.find(block => block.getDate() == date);
-    currentBlock = found; 
+  const getBlocks = function ListOfParsedTimeBlocks() {
+    return JSON.parse(getList());
   };
 
-  const getJsonBlocks = () => {
-    return JSON.parse(localStorage.getItem("blocks"))
+  const addBlock = function addBlockToLocalStorage(block) {
+    let blocks = getBlocks() || [];
+    blocks.push(block);
+    localStorage["blocks"] = JSON.stringify(blocks);
   };
 
-  const getBlocks = () => blocks;
+  const getCurrentBlock = function selectCurrentBlock() {
+    let blocks = getBlocks();
+    const found = blocks.find(block => block.current === true);
+    return found;
+  };
 
-  const getCurrentBlock = () => currentBlock || blocks[0];
+  const setCurrentBlock = function setCurrentToSelectedBlock(date) {
+    let blocks = getBlocks();
 
-  const getCurrentBlockProps = () => getJsonBlocks()[0];
+    // unselect all first
+    blocks.forEach(block => {
+      block.current = false;
+    });
+
+    blocks.forEach(block => {
+     if (block.date == date) {
+       block.current = true;
+     }
+    });
+
+    localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
-    addBlock,
-    setCurrentBlock,
+    getList,
     getBlocks,
+    addBlock,
     getCurrentBlock,
-    getJsonBlocks,
-    getCurrentBlockProps,
-    updateLocalStorage
-
+    setCurrentBlock,
   };
 })();
 
@@ -86,11 +102,7 @@ document.querySelector('.task-submit').addEventListener('click', function(){
 
 
   const newTask = Task(obj);
-  // separate current block and blockprops 
-  TimeBlockController.getCurrentBlock().addTask(newTask);
-  TimeBlockController.updateLocalStorage();
-  timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderTasks();
-
+  console.log(newTask);
   taskModal.classList.toggle("hidden");
   document.querySelector('#task-form').reset();
 });
@@ -114,10 +126,11 @@ document.querySelector('.block-submit').addEventListener('click', function(){
 
   const newBlock = TimeBlock(obj);
   TimeBlockController.addBlock(newBlock);
-  TimeBlockController.updateLocalStorage();
+  TimeBlockController.setCurrentBlock(newBlock.date);
 
-  sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
-  timeBlockComponent(TimeBlockController.getCurrentBlockProps()).renderGrids();
+  sideNavComponent(TimeBlockController.getBlocks()).renderList();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
 
   blockModal.classList.toggle("hidden");
   document.querySelector('#block-form').reset();
@@ -127,41 +140,38 @@ document.querySelector('#side-nav-btn').addEventListener('click', function(){
   document.querySelector('#side-nav').classList.toggle('hidden');
 });
 
-
- sideNavComponent(TimeBlockController.getJsonBlocks()).renderList();
- console.log(TimeBlockController.getJsonBlocks())
- console.log(TimeBlockController.getCurrentBlockProps())
- console.log(TimeBlockController.getCurrentBlock())
+// on load
+sideNavComponent(TimeBlockController.getBlocks()).renderList();
+timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
 
 // TODO: 
-// make a form for new block
-
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
 
-var EventManager = new (function() {
-  var events = {};
+// var EventManager = new (function() {
+//   var events = {};
 
-  this.publish = function(name, data) {
-    var handlers = events[name];
-    if(!!handlers === false) return;
-    handlers.forEach(function(handler) {
-      handler.call(this, data);
-    });
-  };
+//   this.publish = function(name, data) {
+//     var handlers = events[name];
+//     if(!!handlers === false) return;
+//     handlers.forEach(function(handler) {
+//       handler.call(this, data);
+//     });
+//   };
 
-  this.subscribe = function(name, handler) {
-    var handlers = events[name];
-    if(!!handlers === false) {
-      handlers = events[name] = [];
-    }
-    handlers.push(handler);
-  };
+//   this.subscribe = function(name, handler) {
+//     var handlers = events[name];
+//     if(!!handlers === false) {
+//       handlers = events[name] = [];
+//     }
+//     handlers.push(handler);
+//   };
 
-  this.unsubscribe = function(name, handler) {
-    var handlers = events[name];
-    if(!!handlers === false) return;
+//   this.unsubscribe = function(name, handler) {
+//     var handlers = events[name];
+//     if(!!handlers === false) return;
 
-    var handlerIdx = handlers.indexOf(handler);
-    handlers.splice(handlerIdx);
-  };
-});
+//     var handlerIdx = handlers.indexOf(handler);
+//     handlers.splice(handlerIdx);
+//   };
+// });

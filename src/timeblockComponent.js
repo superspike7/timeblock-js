@@ -4,6 +4,7 @@ const timeBlockComponent = (obj) => {
 
   const timeGrid = () => {
     const grid = document.createElement('div');
+
     grid.classList.add('time-grid', 'grid', 'gap-px', 'grid-cols-1', 'bg-gray-200');
 
     obj.range.forEach( n => {
@@ -41,6 +42,7 @@ const timeBlockComponent = (obj) => {
 
   const renderGrids = () => {
     const mainGrid = document.querySelector('.main-grid');
+    mainGrid.innerHTML = "";
 
     mainGrid.append(timeGrid());
     mainGrid.append(taskGrid());
