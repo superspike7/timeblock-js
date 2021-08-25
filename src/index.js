@@ -54,6 +54,14 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const removeBlock = function removeBlockFromList(id) {
+    var blocks = getBlocks();
+
+    var filtered = blocks.filter(block => block.id != id);
+
+    localStorage["blocks"] = JSON.stringify(filtered);
+  }
+
   const addTask = function addTaskToCurrentBlock(task) {
     var blocks = getBlocks();
 
@@ -73,7 +81,8 @@ const TimeBlockController = (function() {
     addBlock,
     getCurrentBlock,
     setCurrentBlock,
-    addTask
+    addTask,
+    removeBlock
   };
 })();
 
@@ -157,6 +166,19 @@ document.querySelector('#blocks-list').addEventListener('click', function change
   if (e.target.classList.contains('not-selected')) {
     
   TimeBlockController.setCurrentBlock(e.target.getAttribute('value'));
+
+  sideNavComponent(TimeBlockController.getBlocks()).renderList();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  };
+});
+
+document.querySelector('#blocks-list').addEventListener('click', function removeItemFromList(e){
+  if (e.target.classList.contains('remove-item-btn')) {
+
+    console.log(e.target.getAttribute('value'));
+
+    TimeBlockController.removeBlock(e.target.getAttribute('value'))
 
   sideNavComponent(TimeBlockController.getBlocks()).renderList();
   timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();

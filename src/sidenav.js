@@ -5,11 +5,16 @@ const sideNavComponent = (objs) => {
     objs.forEach(obj => {
       const item = document.createElement('li');
       const date = document.createElement('span');
-      item.classList.add('my-1');
-      date.classList.add('rounded-md', 'px-8', `${obj.current ? 'selected' : 'not-selected'}`);
+      const removeBtn = document.createElement('span');
+      item.classList.add('my-1', 'flex', 'justify-between');
+      date.classList.add('rounded-md', 'px-2', `${obj.current ? 'selected' : 'not-selected'}`);
+      removeBtn.classList.add('remove-item-btn', 'rounded-md', 'px-2', 'bg-red-500', 'font-semibold', 'text-white', 'cursor-pointer', 'hover:bg-red-800'  );
       date.setAttribute('value', obj.id)
+      removeBtn.setAttribute('value', obj.id)
       date.innerText = obj.date;
+      removeBtn.innerText = 'x';
       item.appendChild(date);
+      item.appendChild(removeBtn);
       list.appendChild(item);
     });
     return list;
