@@ -27,6 +27,7 @@ const TimeBlockController = (function() {
   const addBlock = function addBlockToLocalStorage(block) {
     var blocks = getBlocks() || [];
     blocks.push(block);
+
     localStorage["blocks"] = JSON.stringify(blocks);
   };
 
@@ -150,10 +151,6 @@ document.querySelector('.block-submit').addEventListener('click', function(){
 
   blockModal.classList.toggle("hidden");
   document.querySelector('#block-form').reset();
-});
-
-document.querySelector('#side-nav-btn').addEventListener('click', function(){
-  document.querySelector('#side-nav').classList.toggle('hidden');
 });
 
 document.querySelector('#blocks-list').addEventListener('click', function changeCurrentBlockToSelectedItem(e){
