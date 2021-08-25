@@ -74,6 +74,17 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const removeTask = function removeTaskFromCurrentBlock(id) {
+    var blocks = getBlocks();
+    blocks.forEach(block => {
+      if (block.current == true) {
+        block.tasks = block.tasks.filter(task => task.id != id)
+      };
+    });
+
+    localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
     getList,
@@ -82,7 +93,8 @@ const TimeBlockController = (function() {
     getCurrentBlock,
     setCurrentBlock,
     addTask,
-    removeBlock
+    removeBlock,
+    removeTask
   };
 })();
 
@@ -180,16 +192,30 @@ document.querySelector('#blocks-list').addEventListener('click', function remove
 
     TimeBlockController.removeBlock(e.target.getAttribute('value'))
 
-  sideNavComponent(TimeBlockController.getBlocks()).renderList();
-  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
-  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+    sideNavComponent(TimeBlockController.getBlocks()).renderList();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  };
+});
+
+document.querySelector('.main-grid').addEventListener('click', function removeTask(e){
+  if (e.target.classList.contains('remove-task-btn')) {
+    TimeBlockController.removeTask(e.target.getAttribute('value'));
+
+    sideNavComponent(TimeBlockController.getBlocks()).renderList();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
   };
 });
 
 // on load
-sideNavComponent(TimeBlockController.getBlocks()).renderList();
-timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
-timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+(function onLoad(){
+  if(!!localStorage["blocks"]) {
+    sideNavComponent(TimeBlockController.getBlocks()).renderList();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  }
+})();
 
 // TODO: 
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/
