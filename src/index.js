@@ -25,19 +25,19 @@ const TimeBlockController = (function() {
   };
 
   const addBlock = function addBlockToLocalStorage(block) {
-    let blocks = getBlocks() || [];
+    var blocks = getBlocks() || [];
     blocks.push(block);
     localStorage["blocks"] = JSON.stringify(blocks);
   };
 
   const getCurrentBlock = function selectCurrentBlock() {
-    let blocks = getBlocks();
-    const found = blocks.find(block => block.current === true);
+    var blocks = getBlocks();
+    var found = blocks.find(block => block.current === true);
     return found;
   };
 
   const setCurrentBlock = function setCurrentToSelectedBlock(id) {
-    let blocks = getBlocks();
+    var blocks = getBlocks();
 
     // unselect all first
     blocks.forEach(block => {
@@ -53,6 +53,18 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const addTask = function addTaskToCurrentBlock(task) {
+    var blocks = getBlocks();
+
+    blocks.forEach(block => {
+      if (block.current == true) {
+        block.tasks.push(task)
+      };
+    });
+
+    localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
     getList,
@@ -60,6 +72,7 @@ const TimeBlockController = (function() {
     addBlock,
     getCurrentBlock,
     setCurrentBlock,
+    addTask
   };
 })();
 
@@ -101,7 +114,11 @@ document.querySelector('.task-submit').addEventListener('click', function(){
 
 
   const newTask = Task(obj);
-  console.log(newTask);
+  TimeBlockController.addTask(newTask);
+
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+
   taskModal.classList.toggle("hidden");
   document.querySelector('#task-form').reset();
 });
