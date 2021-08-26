@@ -1,4 +1,12 @@
-var id = 0;
+const getID = () => {
+  if (!localStorage["blockID"]) {
+    localStorage["blockID"] = "0";
+    console.log('blockID initiated to 0');
+  }
+  var id = (Number(localStorage["blockID"]) + 1);
+  localStorage["blockID"] = id;
+  return localStorage["blockID"]
+}
 
 const TimeBlock = function timeBlockConstructor(obj) {
   const tasks = [];
@@ -15,9 +23,6 @@ const TimeBlock = function timeBlockConstructor(obj) {
 
   const tasksProps = tasks.map(task => task.getProps());
 
-  const getID = function incrementId() {
-    return id++;
-  }
 
   return {
     current: false,
