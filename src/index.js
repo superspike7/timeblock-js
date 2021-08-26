@@ -118,6 +118,25 @@ const TimeBlockController = (function() {
     return currentTask;
   };
 
+  const editTask = function EditCurrentTaskById(id, props) {
+    var blocks = getBlocks();
+
+    blocks.forEach(block => {
+      if (block.current == true) {
+        block.tasks.forEach(task => {
+          if (task.id == id) {
+            task.title = props.title;
+            task.type = props.type;
+            task.time = props.time;
+            task.description = props.description;
+          };
+        });
+      };
+    })
+
+    localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
     getList,
@@ -129,7 +148,8 @@ const TimeBlockController = (function() {
     removeBlock,
     removeTask,
     doneTask,
-    getCurrentTask
+    getCurrentTask,
+    editTask
   };
 })();
 
@@ -277,12 +297,39 @@ document.querySelector('.main-grid').addEventListener('click', function showTask
     } else if (currentTask.type == "1/2") {
       document.querySelector("#shallowWork").checked = true;
     }
+
+    document.querySelector('.edit-task-id').textContent = currentTask.id;
     
     taskModal.classList.toggle('hidden');
   };
 });
 
-document.querySelector('.close-edit-task-modal').addEventListener('click', function(){
+document.querySelector('.task-edit-submit').addEventListener('click', function submitTaskEditForm(){
+  const taskModal = document.querySelector('.edit-task-modal');
+
+  const taskTitle = document.querySelector('#edit-task-title').value;
+  const taskDescription = document.querySelector('#edit-task-description').value;
+  const taskHour = document.querySelector('#hour').value.padStart(2, "0");
+  const taskMinute = document.querySelector('#minute').value;
+  const taskType = document.querySelector('[name="task-type-edit"]:checked').value;
+  const taskId = document.querySelector('.edit-task-id').textContent
+  var taskDuration = [taskHour, taskMinute].join('');
+
+  var editedTask = {
+    title: taskTitle,
+    description: taskDescription,
+    type: taskType,
+    time: taskDuration
+  }
+
+  TimeBlockController.editTask(taskId, editedTask);
+
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  taskModal.classList.toggle("hidden");
+});
+
+document.querySelector('.close-edit-task-modal').addEventListener('click', function closeTaskEditForm(){
   const taskModal = document.querySelector('.edit-task-modal');
   taskModal.classList.toggle("hidden");
 });
