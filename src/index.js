@@ -105,6 +105,19 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const getCurrentTask = function getCurrentTaskById(id) {
+    var blocks = getBlocks();
+    var currentTask;
+
+    blocks.forEach(block => {
+      if (block.current == true) {
+       currentTask = block.tasks.find(task => task.id == id);
+      }
+    });
+
+    return currentTask;
+  };
+
 
   return {
     getList,
@@ -115,7 +128,8 @@ const TimeBlockController = (function() {
     addTask,
     removeBlock,
     removeTask,
-    doneTask
+    doneTask,
+    getCurrentTask
   };
 })();
 
@@ -237,6 +251,40 @@ document.querySelector('.main-grid').addEventListener('click', function toggleCo
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
   };
+});
+
+document.querySelector('.main-grid').addEventListener('click', function showTaskEditForm(e){
+  if (e.target.classList.contains('edit-task-btn')) {
+
+    var currentTask = TimeBlockController.getCurrentTask(e.target.getAttribute('value'))
+    var time = (currentTask.time.match(/.{1,2}/g));
+    var hour = time[0].substring(1);
+    var minute = time[1] == "30" ? 1 : 0;
+
+    const taskModal = document.querySelector('.edit-task-modal');
+
+    const taskTitle = document.querySelector('#edit-task-title');
+    const taskDescription = document.querySelector('#edit-task-description');
+    const taskHour = document.querySelector('#hour');
+    const taskMinute = document.querySelector('#minute');
+
+    taskTitle.setAttribute('value', currentTask.title);
+    taskDescription.innerHTML = currentTask.description;
+    taskHour.options[hour].selected = true;
+    taskMinute.options[minute].selected = true;
+    if (currentTask.type == "full") {
+      document.querySelector("#deepWork").checked = true;
+    } else if (currentTask.type == "1/2") {
+      document.querySelector("#shallowWork").checked = true;
+    }
+    
+    taskModal.classList.toggle('hidden');
+  };
+});
+
+document.querySelector('.close-edit-task-modal').addEventListener('click', function(){
+  const taskModal = document.querySelector('.edit-task-modal');
+  taskModal.classList.toggle("hidden");
 });
 
 // on load
