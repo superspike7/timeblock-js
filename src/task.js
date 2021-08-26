@@ -1,4 +1,15 @@
-var id = 0;
+
+const getID = () => {
+  if (!localStorage["taskID"]) {
+    localStorage["taskID"] = "0";
+    console.log('taskID initiated to 0');
+  }
+  var id = (Number(localStorage["taskID"]) + 1);
+  localStorage["taskID"] = id;
+  return localStorage["taskID"]
+}
+
+
 const Task = function taskConstructor(obj){
   const getTime = () => obj.time; 
   const getTitle = () => obj.title || "no title"; 
@@ -12,9 +23,6 @@ const Task = function taskConstructor(obj){
   const getDescription = () => obj.description; 
   const isComplete = () => obj.completed || false ; 
 
-  const getID = () => {
-    return id++;
-  }
 
   return {
     time: getTime(),

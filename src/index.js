@@ -85,6 +85,24 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const doneTask = function toggleCompleteTaskFromCurrentBlock(id) {
+    var blocks = getBlocks();
+    blocks.forEach(block => {
+      if (block.current == true) {
+        block.tasks.forEach(task => {
+          if (task.id == id) {
+            task.completed = true;
+            console.log(task);
+          }
+        });
+      };
+    });
+
+    console.log(id)
+
+    // localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
     getList,
@@ -94,7 +112,8 @@ const TimeBlockController = (function() {
     setCurrentBlock,
     addTask,
     removeBlock,
-    removeTask
+    removeTask,
+    doneTask
   };
 })();
 
@@ -208,6 +227,17 @@ document.querySelector('.main-grid').addEventListener('click', function removeTa
   };
 });
 
+document.querySelector('.main-grid').addEventListener('click', function toggleCompleteTask(e){
+  if (e.target.classList.contains('check-task-btn')) {
+    console.log(e.target.getAttribute('value'))
+    TimeBlockController.doneTask(e.target.getAttribute('value'));
+
+    // sideNavComponent(TimeBlockController.getBlocks()).renderList();
+    // timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+    // timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  };
+});
+
 // on load
 (function onLoad(){
   if(!!localStorage["blocks"]) {
@@ -215,7 +245,11 @@ document.querySelector('.main-grid').addEventListener('click', function removeTa
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
   }
+
+
+
 })();
+
 
 // TODO: 
 // PubSub copied from https://paul.kinlan.me/building-a-pubsub-api-in-javascript/

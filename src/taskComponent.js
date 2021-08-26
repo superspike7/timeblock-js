@@ -13,9 +13,11 @@ const taskComponent = (obj) => {
     btns.classList.add('absolute', 'top-px', 'right-px', 'inline-flex', 'space-x-1');
     removeBtn.classList.add('p-1', 'text-red-500', 'text-white', 'cursor-pointer', 'hover:bg-red-800', 'hover:text-white', 'remove-task-btn');
     editBtn.classList.add('p-1', 'text-blue-500', 'text-white', 'cursor-pointer', 'hover:bg-blue-800', 'hover:text-white');
-    checkBtn.classList.add('p-1', 'text-green-500', 'text-white', 'cursor-pointer', 'hover:bg-green-800', 'hover:text-white');
+    checkBtn.classList.add('p-1', 'text-green-500', 'text-white', 'cursor-pointer', 'hover:bg-green-800', 'hover:text-white', 'check-task-btn');
 
     removeBtn.setAttribute('value', obj.id)
+    editBtn.setAttribute('value', obj.id)
+    checkBtn.setAttribute('value', obj.id)
 
     removeBtn.innerHTML = "X";
     editBtn.innerHTML = "Edit";
