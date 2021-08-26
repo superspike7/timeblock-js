@@ -8,7 +8,7 @@ const taskComponent = (obj) => {
     const editBtn = document.createElement('span');
     const checkBtn = document.createElement('span');
     const btns = document.createElement('div');
-    task.classList.add('bg-blue-100', 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1', 'text-center', 'task-container', 'relative');
+    task.classList.add(`${obj.completed ? 'bg-green-200' : 'bg-blue-100'}`, 'flex', 'flex-col', 'justify-center', 'items-center', 'py-1', 'text-center', 'task-container', 'relative');
     task.classList.add(`h-${obj.time}`, `w-${obj.type}`);
     btns.classList.add('absolute', 'top-px', 'right-px', 'inline-flex', 'space-x-1');
     removeBtn.classList.add('p-1', 'text-red-500', 'text-white', 'cursor-pointer', 'hover:bg-red-800', 'hover:text-white', 'remove-task-btn');

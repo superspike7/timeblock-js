@@ -92,15 +92,13 @@ const TimeBlockController = (function() {
         block.tasks.forEach(task => {
           if (task.id == id) {
             task.completed = true;
-            console.log(task);
           }
         });
       };
     });
 
-    console.log(id)
 
-    // localStorage["blocks"] = JSON.stringify(blocks)
+    localStorage["blocks"] = JSON.stringify(blocks)
   };
 
 
@@ -229,12 +227,11 @@ document.querySelector('.main-grid').addEventListener('click', function removeTa
 
 document.querySelector('.main-grid').addEventListener('click', function toggleCompleteTask(e){
   if (e.target.classList.contains('check-task-btn')) {
-    console.log(e.target.getAttribute('value'))
     TimeBlockController.doneTask(e.target.getAttribute('value'));
 
-    // sideNavComponent(TimeBlockController.getBlocks()).renderList();
-    // timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
-    // timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+    sideNavComponent(TimeBlockController.getBlocks()).renderList();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+    timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
   };
 });
 
