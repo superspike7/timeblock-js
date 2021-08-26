@@ -91,7 +91,11 @@ const TimeBlockController = (function() {
       if (block.current == true) {
         block.tasks.forEach(task => {
           if (task.id == id) {
-            task.completed = true;
+            if (task.completed == false) {
+              task.completed = true;
+            } else {
+              task.completed = false;
+            }
           }
         });
       };
@@ -242,9 +246,6 @@ document.querySelector('.main-grid').addEventListener('click', function toggleCo
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
     timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
   }
-
-
-
 })();
 
 
