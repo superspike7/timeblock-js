@@ -200,9 +200,11 @@ document.querySelector('.close-block-modal').addEventListener('click', function(
 document.querySelector('.task-submit').addEventListener('click', function(){
   const taskModal = document.querySelector('.task-modal');
   const taskTitle = document.querySelector('#task-title').value;
-  const taskDuration = Array.from(document.querySelectorAll('[name="task-duration"]')).map(x => x.value.padStart(2, "0")).join('');
+  const hour = document.querySelector('#duration-hour').value;
+  const minute = document.querySelector('#duration-minute').value;
   const taskType = document.querySelector('[name="task-type"]:checked').value;
   const taskDescription = document.querySelector('#task-description').value;
+  const taskDuration = [hour, minute].join('')
 
 
   const obj = {
