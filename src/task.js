@@ -30,9 +30,7 @@ const Task = function taskConstructor(obj){
     type: getType(),
     description: getDescription(),
     completed: isComplete(),
-    id: getID()
-  };
-
+    id: getID() };
 
 };
 

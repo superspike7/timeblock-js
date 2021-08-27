@@ -1,12 +1,12 @@
 const getID = () => {
   if (!localStorage["blockID"]) {
     localStorage["blockID"] = "0";
-    console.log('blockID initiated to 0');
+    console.log("blockID initiated to 0");
   }
-  var id = (Number(localStorage["blockID"]) + 1);
+  var id = Number(localStorage["blockID"]) + 1;
   localStorage["blockID"] = id;
-  return localStorage["blockID"]
-}
+  return localStorage["blockID"];
+};
 
 const TimeBlock = function timeBlockConstructor(obj) {
   const tasks = [];
@@ -15,14 +15,13 @@ const TimeBlock = function timeBlockConstructor(obj) {
 
   const range = () => {
     let arr = [];
-    for(let i = Number(obj.wakeTime); i <= Number(obj.sleepTime); i++) {
+    for (let i = Number(obj.wakeTime); i <= Number(obj.sleepTime); i++) {
       arr.push(i);
     }
     return arr;
   };
 
-  const tasksProps = tasks.map(task => task.getProps());
-
+  const tasksProps = tasks.map((task) => task.getProps());
 
   return {
     current: false,
@@ -31,9 +30,8 @@ const TimeBlock = function timeBlockConstructor(obj) {
     wakeTime: obj.wakeTime,
     sleepTime: obj.sleepTime,
     range: range(),
-    id: getID()
+    id: getID(),
   };
-  
 };
 
-export { TimeBlock }
+export { TimeBlock };
