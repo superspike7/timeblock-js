@@ -287,6 +287,99 @@
         </div>
       </div>
     </div>
+
+    <!-- edit block modal -->
+
+    <div class="block-edit-modal flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-opacity-30 bg-gray-800 hidden">
+      <div class="bg-white rounded-lg w-1/2">
+        <div class="flex flex-col items-start p-4">
+          <div class="flex items-center w-full justify-center">
+            <span class="hidden edit-block-id"></span>
+            <div class="text-gray-900 font-medium text-xl">Edit Block</div>
+          </div>
+          <hr>
+
+          <form id="block-edit-form" class="w-3/4 mx-auto p-4 bg-gray-100">
+            <label class="block">
+              <span class="text-gray-700">Date:</span>
+              <input type="date" name="block-date-edit" id="block-date-edit">
+            </label>
+
+            <label class="block">
+              <span class="text-gray-700">Waking Time:</span>
+                <select name="wake-time-edit" id="wake-time-edit" class="bg-transparent text-xl appearance-none outline-none">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">10</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                </select>
+            </label>
+
+            <label class="block">
+              <span class="text-gray-700">Sleeping Time:</span>
+                <select name="sleep-time-edit" id="sleep-time-edit" class="bg-transparent text-xl appearance-none outline-none">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">10</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                </select>
+            </label>
+
+
+          </form>
+
+          <hr>
+          <div class="ml-auto mt-4">
+            <button class="block-edit-submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Edit 
+            </button>
+            <button class="close-block-edit-modal bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   
   <script src="bundle.js"></script>
 </body>

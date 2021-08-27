@@ -7,8 +7,6 @@ import { Task } from "./task";
 import { sideNavComponent } from "./sidenav";
 import { timeBlockComponent } from "./timeblockComponent";
 
-// TODO:
-// make dynamic event listeners
 
 const TimeBlockController = (function() {
 
@@ -137,6 +135,29 @@ const TimeBlockController = (function() {
     localStorage["blocks"] = JSON.stringify(blocks)
   };
 
+  const getBlock = function returnBlockObjectById(id) {
+    var blocks = getBlocks();
+    var selectedBlock;
+
+    selectedBlock = blocks.find(block => block.id == id);
+
+    return selectedBlock;
+  };
+
+  const editBlock = function editBlockById(id, props) {
+    var blocks = getBlocks();
+
+    blocks.forEach(block => {
+      if (block.id == id) {
+        block.date = props.date
+        block.wakeTime = props.wakeTime
+        block.sleepTime = props.sleepTime
+      }
+    })
+
+    localStorage["blocks"] = JSON.stringify(blocks)
+  };
+
 
   return {
     getList,
@@ -149,7 +170,9 @@ const TimeBlockController = (function() {
     removeTask,
     doneTask,
     getCurrentTask,
-    editTask
+    editTask,
+    getBlock,
+    editBlock
   };
 })();
 
@@ -276,27 +299,27 @@ document.querySelector('.main-grid').addEventListener('click', function toggleCo
 document.querySelector('.main-grid').addEventListener('click', function showTaskEditForm(e){
   if (e.target.classList.contains('edit-task-btn')) {
 
-    var currentTask = TimeBlockController.getCurrentTask(e.target.getAttribute('value'))
-    var time = (currentTask.time.match(/.{1,2}/g));
-    var hour = time[0].substring(1);
-    var minute = time[1] == "30" ? 1 : 0;
+    const currentTask = TimeBlockController.getCurrentTask(e.target.getAttribute('value'))
+    const time = (currentTask.time.match(/.{1,2}/g));
+    const hour = time[0].substring(1);
+    const minute = time[1] == "30" ? 1 : 0;
 
     const taskModal = document.querySelector('.edit-task-modal');
 
-    const taskTitle = document.querySelector('#edit-task-title');
-    const taskDescription = document.querySelector('#edit-task-description');
-    const taskHour = document.querySelector('#hour');
-    const taskMinute = document.querySelector('#minute');
-
-    taskTitle.setAttribute('value', currentTask.title);
-    taskDescription.innerHTML = currentTask.description;
-    taskHour.options[hour].selected = true;
-    taskMinute.options[minute].selected = true;
+    document.querySelector('#edit-task-title').textContent = currentTask.title;
+    document.querySelector('#edit-task-description').textContent = currentTask.description;
+    document.querySelector('#hour').options[hour].selected = true;
+    document.querySelector('#minute').options[minute].selected = true;
+    
     if (currentTask.type == "full") {
       document.querySelector("#deepWork").checked = true;
     } else if (currentTask.type == "1/2") {
       document.querySelector("#shallowWork").checked = true;
     }
+
+    console.log(currentTask)
+    console.log(time)
+
 
     document.querySelector('.edit-task-id').textContent = currentTask.id;
     
@@ -332,6 +355,53 @@ document.querySelector('.task-edit-submit').addEventListener('click', function s
 document.querySelector('.close-edit-task-modal').addEventListener('click', function closeTaskEditForm(){
   const taskModal = document.querySelector('.edit-task-modal');
   taskModal.classList.toggle("hidden");
+});
+
+document.querySelector('#blocks-list').addEventListener('click', function showBlockEditFormById(e) {
+  if (e.target.classList.contains('edit-item-btn')) {
+    const blockModal = document.querySelector('.block-edit-modal');
+    var selectedBlock = TimeBlockController.getBlock(e.target.getAttribute('value'));
+
+    document.querySelector('#block-date-edit').value = selectedBlock.date;
+    document.querySelector('#wake-time-edit').options[selectedBlock.wakeTime].selected = true;
+    document.querySelector('#sleep-time-edit').options[selectedBlock.sleepTime].selected = true;
+
+    // date.value = selectedBlock.date
+    // dayStart.options[selectedBlock.wakeTime].selected = true
+    // dayEnd.options[selectedBlock.sleepTime].selected = true
+
+    document.querySelector('.edit-block-id').textContent = selectedBlock.id;
+    console.log(selectedBlock.id)
+
+    blockModal.classList.toggle("hidden");
+  }
+});
+
+document.querySelector('.block-edit-submit').addEventListener('click', function editSelectedBlock() {
+  const blockModal = document.querySelector('.block-edit-modal');
+
+  const date = document.querySelector('#block-date-edit').value;
+  const dayStart = document.querySelector('#wake-time-edit').value;
+  const dayEnd = document.querySelector('#sleep-time-edit').value;
+  const blockId = document.querySelector('.edit-block-id').textContent;
+  
+  var editedBlock = {
+    date: date,
+    wakeTime: dayStart,
+    sleepTime: dayEnd
+  }
+
+  TimeBlockController.editBlock(blockId, editedBlock);
+
+  sideNavComponent(TimeBlockController.getBlocks()).renderList();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderGrids();
+  timeBlockComponent(TimeBlockController.getCurrentBlock()).renderTasks();
+  blockModal.classList.toggle("hidden");
+});
+
+document.querySelector('.close-block-edit-modal').addEventListener('click', function closeblockEditForm(){
+  const blockModal = document.querySelector('.block-edit-modal');
+  blockModal.classList.toggle("hidden");
 });
 
 // on load
